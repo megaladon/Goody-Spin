@@ -1,31 +1,41 @@
 package com.game.data {
+	import flash.display.MovieClip;
 	/**
 	 * ...
 	 * @author Keith Goodman
 	 */
-	public class slotData 
+	public class SlotData extends MovieClip
 	{
+		private static var _data:Array;
 		
-		public function slotData() 
+		//public function SlotData() 
 		{
-			// slot background
-			// slot symbols
-			//
-			var _data:Object = [
-				{category: "animals", slots:[{animationID: "pig1", slotID: ""}]}
-			]; 
+			
+			_data = [ 
+				{
+					slotType: SlotDataEvents.ANIMALS, reelData: 
+								[
+									{ animationID: "pig1", slotID: Symbol_pig },
+									{ animationID: "chicken1", slotID: Symbol_chicken },
+									{ animationID: "cow1", slotID: Symbol_cow },
+									{ animationID: "ram1", slotID: Symbol_ram }							
+								] 
+				}
+			];
 		}
 		
-		public function getSlotSymbols(slotType:String):void 
+		public static function getSlotSymbols(slotType:String):Array 
 		{
-			var symbols:Array = new Array();
-			switch (slotType) 
+			var reelData:Array = new Array();
+			for (var i:int = 0; i < _data.length ; i++) 
 			{
-				case SlotDataEvents.ANIMALS:
-					symbols = [];
-				break;
-				default:
-			}
+				if (_data[i].slotType == slotType) 
+				{
+					reelData = _data[i].reelData;
+				}
+			}			
+			return reelData;			
+		}
 		
 	}
 

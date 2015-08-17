@@ -1,5 +1,6 @@
 package com.game.reel 
 {
+	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
@@ -15,6 +16,7 @@ package com.game.reel
 		private var _reelSymbols:Array;
 		private var _isMoving:Boolean;
 		private var _interval:Number;
+		private var _currentSymbol:Object
 		
 		public function Reel(data:Array) 
 		{
@@ -52,6 +54,17 @@ package com.game.reel
 			}
 		}
 		
+		public function onReelBalanced(currSymbol:Object):void 
+		{
+			_currentSymbol = currSymbol;
+			TweenMax.delayedCall(1, notifyStop);
+		}
+		
+		private function notifyStop():void 
+		{
+			dispatchEvent( new ReelEvents(ReelEvents.REEL_STOPPED) );			
+		}
+		
 		public function get reelSymbols():Array 
 		{
 			return _reelSymbols;
@@ -75,6 +88,16 @@ package com.game.reel
 		public function set interval(value:Number):void 
 		{
 			_interval = value;
+		}
+		
+		public function get currentSymbol():Object 
+		{
+			return _currentSymbol;
+		}
+		
+		public function set currentSymbol(value:Object):void 
+		{
+			_currentSymbol = value;
 		}
 		
 		

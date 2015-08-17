@@ -1,7 +1,9 @@
 package com.game 
 {
+	import com.game.data.SlotData;
 	import com.game.payLine.PayLine;
 	import com.game.reel.Reel;
+	import com.game.reel.ReelEvents;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
@@ -31,43 +33,62 @@ package com.game
 		// toddler mode vars
 		private var _currSymbolNum:int
 		private var _isWatchingForSymbol:Boolean;
+		private var _numReelsStopped:int;
+		private var _slotType:String;
 		
 		public function Game(slotType:String) 
 		{
-			trace("init slot type: " + slotType);
-			
+			trace("init slot type: " + slotType);	
+			_slotType = slotType;
 			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);				
-		
+			else addEventListener(Event.ADDED_TO_STAGE, init);			
 		}
 		
 		private function init(e:Event=null):void 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);	
-			_reelData = [ 
-			{ animationID: "pig1", slotID: Symbol_pig },
-			{ animationID: "pig1", slotID: Symbol_chicken },
-			{ animationID: "pig1", slotID: Symbol_cow },
-			{ animationID: "pig1", slotID: Symbol_ram }
-			];			
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			_reelData = SlotData.getSlotSymbols( _slotType );
 			
-			_reel1 		= new Reel(_reelData)
+			//var gameData:Array = 
+			//[ 
+				//{
+					//slotType: "Animals", reelData: 
+								//[
+									//{ animationID: "pig1", slotID: Symbol_pig },
+									//{ animationID: "chicken1", slotID: Symbol_chicken },
+									//{ animationID: "cow1", slotID: Symbol_cow },
+									//{ animationID: "ram1", slotID: Symbol_ram }							
+								//] 
+				//}
+			//];
+			
+			//for (var i:int = 0; i < gameData.length ; i++) 
+			//{
+				//if (gameData[i].slotType == _slotType) 
+				//{
+					//_reelData = gameData[i].reelData
+				//}
+			//}
+			
+			_reel1 		= new Reel(_reelData);
+			_reel1.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
 			_reel1.x 	= 320;
 			_reel1.y 	= -_reel1.height + 800 ;
 			
 			_reel2 		= new Reel(_reelData);
+			_reel2.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
 			_reel2.x 	= _reel1.x + _reel2.width;
 			_reel2.y 	= -_reel1.height + 800 ;
 			
 			_reel3 		= new Reel(_reelData);
+			_reel3.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
 			_reel3.x 	= _reel2.x + _reel3.width;
 			_reel3.y 	= -_reel1.height + 800 ;
-			
+			_numReelsStopped = 0;
 			_currSymbolNum = 0;	
 			addChild(_reel1);
 			addChild(_reel2);
 			addChild(_reel3);
-			//_isReelMoving = false;
 			
 			_payLine = new PayLine();
 			_payLine.x = _payLine.width/2;
@@ -93,8 +114,7 @@ package com.game
 		}
 		
 		private function resetReel(reel:Reel):void 
-		{
-			
+		{			
 			for (var i:int = 0; i < reel.reelSymbols.length; i++) 
 			{
 				reel.reelSymbols[i].alpha = 1;
@@ -107,12 +127,8 @@ package com.game
 			_reel1.isMoving = !_reel1.isMoving;
 			_reel2.isMoving = !_reel2.isMoving;
 			_reel3.isMoving = !_reel3.isMoving;
-			var _reelSpeeds:Array = [ [1000, 1200, 1300] ]; 
-			//_interval = setInterval(stopReels, 1000);					
-			
+			var _reelSpeeds:Array = [ [1000, 1200, 1300] ]; 						
 			_reel1.interval = setInterval(stopReel, 1000, _reel1);
-			//_reel2.interval = setInterval(stopReel, 1200, _reel2);
-			//_reel3.interval = setInterval(stopReel, 1300, _reel3);
 			updateGameState(GameEvents.SPINNING);
 		}
 		
@@ -121,46 +137,20 @@ package com.game
 			clearInterval(reel.interval);
 			
 			if (_gameMode == "toddler") 
-			{
-				// get the next symbol
-			//	var targetSymbol:Object = _reelData[_currSymbolNum];
-				
-				//_payLine.watchForSymbol(_reelData, _reelData[_currSymbolNum].slotID);
-				//_payLine.addEventListener(_payLine.SYMBOL_ON_PAYLINE, stopOnSymbol);
-				
+			{				
 				// TODO: choose a stop package/speed here and set it
 				_isWatchingForSymbol = true;
-				
-				// stop on target symbol
 			}
-			
-			/*
-			reel.isMoving = false;	
-			var payLineSymbol:MovieClip = getSymbolOnPayLine(reel.reelSymbols);
-			MovieClip(payLineSymbol).alpha = .5;
-			
-			// get the distance from payline
-			var pls_y:Number = payLineSymbol.y + reel.y;
-			var dist:Number = pls_y - _payLine.y ;
-			trace("dist " + dist);
-			
-			var destination:Number
-			if (dist > 0 && reel.y < 0 || dist < 0 && reel.y < 0) 
-			{
-				destination = reel.y - dist;
-			}else {	
-				trace("less thatn 0 "+reel.y);
-				destination = reel.y + dist;
-			}			
-			TweenMax.to( reel, .3, { y: destination, ease:Bounce.easeInOut } )
-			*/
 		}
 		
-		//private function stopOnSymbol(e:Event):void 
-		//{
-			//trace("stopOnSymbol");
-			//trace(stopOnSymbol);
-		//}
+		private function reelHasStopped(e:ReelEvents):void 
+		{
+			_numReelsStopped++;
+			if (_numReelsStopped == 3) 
+			{
+				trace("JACKPOT! Play Animation! " +_currSymbolNum+" "+_reelData[_currSymbolNum].animationID );
+			}
+		}
 		
 		private function startWatchForSymbol():void 
 		{
@@ -174,53 +164,17 @@ package com.game
 			{
 				_isWatchingForSymbol = true;
 			}
-		}
-		
-		private function stopReels():void 
-		{
-			clearInterval(_interval);
-			//stopReel(_reel1);
-			//stopReel(_reel2);
-			//stopReel(_reel3);
-		}
-		
+		}		
 		/**
-		 * Figure out which symbol is touching the payline
+		 * Figure out which symbol is touching the payline and returns it's data
 		 * @param	e
 		 */
-		private function getSymbolOnPayLine (reelSymbols:Array):MovieClip 
+		private function getSymbolOnPayLine (reelSymbols:Array):Object 
 		{
-			var clip:MovieClip
-			var difference:Array = []; 
-			//	trace( "getSymbolOnPayLine " +  reelSymbols.length+" "+reelSymbols);
 			for (var i:int = 0; i < reelSymbols.length; i++) 
 			{
-				if ( MovieClip( reelSymbols[i].clip).hitTestObject( _payLine ) ) 
-				{
-					trace("touching !!! ")
-					clip = reelSymbols[i].clip;
-					
-				}
-				/*
-				//var diff:Number = Math.floor( getDistance( reelSymbols[i].clip, _payLine ) );
-				var sum:Number = reelSymbols[i].clip.y - _reel1.y;
-				trace("sum "+sum+" "+ _payLine.y)
-				var diff:Number = Math.floor(  (reelSymbols[i].clip.y - _reel1.y) - _payLine.y );
-				reelSymbols[i].diff = diff;
-				difference.push( diff );
-				*/
-			}
-				
-			//	trace("clip "+reelSymbols[i].slotID+" "+reelSymbols[i].clip.x+ " " + reelSymbols[i].clip.y);
-				
-				
-			
-			reelSymbols.sortOn(["diff"], [Array.NUMERIC]);
-			for (var j:int = 0; j < reelSymbols.length; j++) 
-			{
-				//trace("difference " + reelSymbols[j].diff+" "+_payLine.x+" "+_payLine.y+" "+_reel1.y);
-			}
-			 //reelSymbols);
+				if ( MovieClip( reelSymbols[i].clip).hitTestObject( _payLine ) ) var clip:Object = reelSymbols[i];					
+			}	
 			return clip;
 		}
 		
@@ -276,16 +230,12 @@ package com.game
 		{
 			for (var i:int = 0; i < reel.reelSymbols.length; i++) 
 			{
-				//trace("Watch " + _payLine+" " + reel.reelSymbols[i].clip);
 				if ( _payLine.clip.hitTestObject(reel.reelSymbols[i].clip) )
 				{
-					//trace("HIT");
 					if (reel.reelSymbols[i].slotID == targetSymbolData) 
 					{
 						reel.isMoving = false;
 						balanceReel(reel);
-						//var slotID:Object = reel.reelSymbols[i].slotID
-						trace("match ");
 						if ( areAnyReelsStillSpinning() ) TweenMax.delayedCall(2, startWatchForSymbol);
 						_isWatchingForSymbol = false;
 					}
@@ -297,21 +247,16 @@ package com.game
 		private function areAnyReelsStillSpinning():Boolean 
 		{
 			var bool:Boolean = false;
-			if (_reel1.isMoving || _reel2.isMoving || _reel3.isMoving) {
-				bool = true;
-			}
+			if (_reel1.isMoving || _reel2.isMoving || _reel3.isMoving) bool = true;
 			return true;
 		}
 		/**
-		 * Lines up current symbol of the specified reel on the payline.
+		 * Lines up the current symbol of the specified reel on the payline and sets it's current symbol.
 		 */
 		private function balanceReel(reel:Reel):void 
 		{
-			// get the distance from payline
-			var payLineSymbol:MovieClip = getSymbolOnPayLine(reel.reelSymbols);
-			var pls_y:Number = payLineSymbol.y + reel.y;
-			var dist:Number = pls_y - _payLine.y ;
-			
+			reel.onReelBalanced( getSymbolOnPayLine(reel.reelSymbols));
+			var dist:Number = (reel.currentSymbol.clip.y + reel.y) - _payLine.y ;			
 			var destination:Number
 			if (dist > 0 && reel.y < 0 || dist < 0 && reel.y < 0) 
 			{
@@ -319,7 +264,7 @@ package com.game
 			}else {	
 				destination = reel.y + dist;
 			}			
-			TweenMax.to( reel, .3, { y: destination, ease:Bounce.easeInOut } )
+			TweenMax.to( reel, .3, { y: destination, ease:Bounce.easeInOut } );			
 		}
 		
 		private function getDistance(pObj1:MovieClip,pObj2:MovieClip):Number {

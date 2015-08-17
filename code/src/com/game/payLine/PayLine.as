@@ -21,6 +21,7 @@ package com.game.payLine
 			addChild( _clip );			
 		}
 		
+		/*
 		// TODO: maybe pull all of this out and put it in games.as?
 		public function watchForSymbol(reelData:Array, targetSymbolID:Class):void 
 		{
@@ -50,7 +51,7 @@ package com.game.payLine
 			
 			
 		}
-		
+		*/
 		public function get clip():MovieClip 
 		{
 			return _clip;
