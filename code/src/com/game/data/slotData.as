@@ -15,10 +15,10 @@ package com.game.data {
 				{
 					slotType: SlotDataEvents.ANIMALS, reelData: 
 								[
-									{ animationID: "pig1", slotID: Symbol_pig },
-									{ animationID: "chicken1", slotID: Symbol_chicken },
-									{ animationID: "cow1", slotID: Symbol_cow },
-									{ animationID: "ram1", slotID: Symbol_ram }							
+									{ animationID: pig1, 		slotID: Symbol_pig, 	title: "Pig" },
+									{ animationID: chicken1, 	slotID: Symbol_chicken, title: "Chicken" },
+									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
+									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
 								] 
 				}
 			];

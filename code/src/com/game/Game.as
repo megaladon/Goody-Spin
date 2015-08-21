@@ -1,5 +1,7 @@
 package com.game 
 {
+	import com.game.animation.Animation;
+	import com.game.animation.AnimationEvents;
 	import com.game.data.SlotData;
 	import com.game.payLine.PayLine;
 	import com.game.reel.Reel;
@@ -35,6 +37,7 @@ package com.game
 		private var _isWatchingForSymbol:Boolean;
 		private var _numReelsStopped:int;
 		private var _slotType:String;
+		private var _animation:Animation;
 		
 		public function Game(slotType:String) 
 		{
@@ -124,6 +127,7 @@ package com.game
 		private function onSpin(e:Event):void 
 		{			
 			resetReels();
+			_numReelsStopped = 0;
 			_reel1.isMoving = !_reel1.isMoving;
 			_reel2.isMoving = !_reel2.isMoving;
 			_reel3.isMoving = !_reel3.isMoving;
@@ -148,8 +152,23 @@ package com.game
 			_numReelsStopped++;
 			if (_numReelsStopped == 3) 
 			{
-				trace("JACKPOT! Play Animation! " +_currSymbolNum+" "+_reelData[_currSymbolNum].animationID );
+				trace("JACKPOT! Play Animation! " +_currSymbolNum + " " + _reelData[_currSymbolNum].animationID );
+				_animation = new Animation( _reelData[_currSymbolNum].animationID, _reelData[_currSymbolNum].title );
+				_animation.addEventListener(AnimationEvents.ANIMATION_DONE, animationDone);
+				addChild( _animation );
+				onAnimationDone();
 			}
+		}
+		
+		private function animationDone(e:AnimationEvents):void 
+		{
+			removeChild( _animation );
+			_animation = null;
+		}
+		
+		private function onAnimationDone(e:Event = null):void 
+		{
+			_currSymbolNum++;
 		}
 		
 		private function startWatchForSymbol():void 
