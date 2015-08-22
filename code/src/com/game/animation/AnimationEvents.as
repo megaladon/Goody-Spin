@@ -8,7 +8,7 @@ package com.game.animation
 	 */
 	public class AnimationEvents extends Event 
 	{
-		public static const ANIMATION_DONE = "animationDone";
+		public static const ANIMATION_DONE:String = "animationDone";
 		public function AnimationEvents(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);

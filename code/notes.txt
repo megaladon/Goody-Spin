@@ -1,18 +1,16 @@
 add a lot of symbols to a reel so it never ends.
 you have to figure out how to reset it. Or maybe relocate each symbol to the top when it gets off screen
 
-
+make sure game is running on game states
+deactivate spin button when spinning
+build out main menu
 Reel basics 2h
-	when it's time for first wheel to stop, stop it on the next animal in the list.
-	stop the rest of the reels on this same animal
 	-- vegas mode --
 	randomly stop each reel
 	
-Reel with real data 2h
-sync 3 reels 3h
 create different types of reel spins
-make toddler mode (user always wins) & random mode (vegas style)
-winning animations basics 2h
-animation window pops up
-title animates 
+random mode (vegas style)
 vo triggers
+
+
+bugs

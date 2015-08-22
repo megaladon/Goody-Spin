@@ -48,8 +48,9 @@ package com.game.animation
 		
 		private function animateInTitle():void 
 		{
+			trace("title "+ _title);
 			_titleHolder = new titleHolder();
-			_titleHolder.t.text = _title;
+			_titleHolder.t.text = "Pigg"// _title;
 			_titleHolder.y = -(_titleHolder.height);
 			addChild(_titleHolder);
 			

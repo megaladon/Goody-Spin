@@ -87,6 +87,8 @@ package com.game
 			_reel3.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
 			_reel3.x 	= _reel2.x + _reel3.width;
 			_reel3.y 	= -_reel1.height + 800 ;
+			
+			
 			_numReelsStopped = 0;
 			_currSymbolNum = 0;	
 			addChild(_reel1);
@@ -99,7 +101,7 @@ package com.game
 			addChild( _payLine );
 			
 			var _forground:MovieClip = new basic_foreground();
-			addChild( _forground );			
+			//addChild( _forground );			
 			
 			var _spin_btn:MovieClip = new spin_btn();
 			_spin_btn.x = 448;
@@ -108,7 +110,7 @@ package com.game
 			addChild(_spin_btn);	;
 			addEventListener(Event.ENTER_FRAME, run);
 		}
-		
+				
 		private function resetReels():void 
 		{
 			_reel1.reset();
@@ -152,11 +154,11 @@ package com.game
 			_numReelsStopped++;
 			if (_numReelsStopped == 3) 
 			{
-				trace("JACKPOT! Play Animation! " +_currSymbolNum + " " + _reelData[_currSymbolNum].animationID );
 				_animation = new Animation( _reelData[_currSymbolNum].animationID, _reelData[_currSymbolNum].title );
 				_animation.addEventListener(AnimationEvents.ANIMATION_DONE, animationDone);
 				addChild( _animation );
-				onAnimationDone();
+				_currSymbolNum++;
+				TweenMax.delayedCall( 1,cosmeticReelReset);
 			}
 		}
 		
@@ -165,11 +167,7 @@ package com.game
 			removeChild( _animation );
 			_animation = null;
 		}
-		
-		private function onAnimationDone(e:Event = null):void 
-		{
-			_currSymbolNum++;
-		}
+				
 		
 		private function startWatchForSymbol():void 
 		{
@@ -284,6 +282,25 @@ package com.game
 				destination = reel.y + dist;
 			}			
 			TweenMax.to( reel, .3, { y: destination, ease:Bounce.easeInOut } );			
+		}
+		/**
+		 * Reels will scroll all the way of screen, so bring them back to the starting position
+		 * then scroll them to the current symbol
+		 */
+		private function cosmeticReelReset():void 
+		{
+			// place reels back to starting position
+			_reel1.y 	= -_reel1.height + 800 ;	
+			_reel2.y 	= -_reel1.height + 800 ;
+			_reel3.y 	= -_reel1.height + 800 ;
+			
+			var reels:Array = [_reel1, _reel2, _reel3];
+			for (var i:int = 0; i < reels.length; i++) 
+			{	
+				var clip:MovieClip = reels[i].getSymbolClosetsSymbol();
+				var dist:Number = (clip.y + reels[i].y) - _payLine.y ;
+				reels[i].y -= dist;
+			}
 		}
 		
 		private function getDistance(pObj1:MovieClip,pObj2:MovieClip):Number {
