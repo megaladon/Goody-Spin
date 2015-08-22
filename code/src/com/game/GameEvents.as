@@ -10,7 +10,7 @@ package com.game
 	{
 		public static const WAITING_FOR_USER:String 	= 	"waitingForUser";
 		public static const SPINNING:String 			=	"spinning";
-		public static const SHOWING_ANIMATGION:String	= 	"showingAnimation";
+		public static const SHOWING_ANIMATION:String	= 	"showingAnimation";
 		
 		
 		public function GameEvents(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 

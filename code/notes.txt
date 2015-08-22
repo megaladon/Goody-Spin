@@ -1,8 +1,6 @@
 add a lot of symbols to a reel so it never ends.
 you have to figure out how to reset it. Or maybe relocate each symbol to the top when it gets off screen
 
-make sure game is running on game states
-deactivate spin button when spinning
 build out main menu
 Reel basics 2h
 	-- vegas mode --

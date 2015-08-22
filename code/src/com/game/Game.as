@@ -109,6 +109,8 @@ package com.game
 			_spin_btn.addEventListener(MouseEvent.CLICK, onSpin);
 			addChild(_spin_btn);	;
 			addEventListener(Event.ENTER_FRAME, run);
+			
+			_gameState = GameEvents.WAITING_FOR_USER;
 		}
 				
 		private function resetReels():void 
@@ -128,14 +130,17 @@ package com.game
 		
 		private function onSpin(e:Event):void 
 		{			
-			resetReels();
-			_numReelsStopped = 0;
-			_reel1.isMoving = !_reel1.isMoving;
-			_reel2.isMoving = !_reel2.isMoving;
-			_reel3.isMoving = !_reel3.isMoving;
-			var _reelSpeeds:Array = [ [1000, 1200, 1300] ]; 						
-			_reel1.interval = setInterval(stopReel, 1000, _reel1);
-			updateGameState(GameEvents.SPINNING);
+			if ( _gameState == GameEvents.WAITING_FOR_USER ) 
+			{
+				resetReels();
+				_numReelsStopped = 0;
+				_reel1.isMoving = !_reel1.isMoving;
+				_reel2.isMoving = !_reel2.isMoving;
+				_reel3.isMoving = !_reel3.isMoving;
+				var _reelSpeeds:Array = [ [1000, 1200, 1300] ]; 						
+				_reel1.interval = setInterval(stopReel, 1000, _reel1);
+				updateGameState(GameEvents.SPINNING);				
+			}
 		}
 		
 		private function stopReel(reel:Reel):void 
@@ -160,12 +165,14 @@ package com.game
 				_currSymbolNum++;
 				TweenMax.delayedCall( 1,cosmeticReelReset);
 			}
+			if (_currSymbolNum == _reelData.length) _currSymbolNum = 0;
 		}
 		
 		private function animationDone(e:AnimationEvents):void 
 		{
 			removeChild( _animation );
 			_animation = null;
+			updateGameState( GameEvents.WAITING_FOR_USER );
 		}
 				
 		
@@ -210,7 +217,7 @@ package com.game
 				case  GameEvents.SPINNING:
 					spinReels();
 				break;
-				case GameEvents.SHOWING_ANIMATGION:
+				case GameEvents.SHOWING_ANIMATION:
 					
 				break;
 				default:
@@ -235,6 +242,9 @@ package com.game
 				}else if (_reel3.isMoving) 
 				{
 					watchForSymbol(_reel3, _reelData[_currSymbolNum].slotID );		
+				}else 
+				{
+					updateGameState( GameEvents.SHOWING_ANIMATION );
 				}
 			}
 		}
@@ -253,20 +263,21 @@ package com.game
 					{
 						reel.isMoving = false;
 						balanceReel(reel);
-						if ( areAnyReelsStillSpinning() ) TweenMax.delayedCall(2, startWatchForSymbol);
+						if ( _gameState == GameEvents.SPINNING ) TweenMax.delayedCall(2, startWatchForSymbol);
 						_isWatchingForSymbol = false;
 					}
 				}				
 				
 			}
 		}
-		
+		/*
 		private function areAnyReelsStillSpinning():Boolean 
 		{
 			var bool:Boolean = false;
 			if (_reel1.isMoving || _reel2.isMoving || _reel3.isMoving) bool = true;
 			return true;
 		}
+		*/
 		/**
 		 * Lines up the current symbol of the specified reel on the payline and sets it's current symbol.
 		 */
