@@ -13,6 +13,7 @@ package com.interfaceScreens.mainMenu
 		private var _clip:MainMenu_MC;
 		private var _playButton:MovieClip;
 		private var _optionsButton:MovieClip;
+		private var _selectedDataSet:String;
 		
 		public function MainMenu() 
 		{
@@ -24,10 +25,21 @@ package com.interfaceScreens.mainMenu
 		private function init():void 
 		{
 			_playButton = _clip.play_btn;
-			_playButton.buttonMode = true;
-			_playButton.mouseChildren = false;
-			_playButton.addEventListener(MouseEvent.MOUSE_UP, onPlayButtonClicked);
-			_playButton.addEventListener(MouseEvent.MOUSE_DOWN, onHiliteButton);
+			
+			var _buttons:Array = [_clip.abcs, _clip.numbers, _clip.animals, _clip.vehicals, _clip.shapes];
+			
+			for (var i:int = 0; i < _buttons.length; i++) 
+			{
+				_buttons[i].buttonMode = true;
+				_buttons[i].mouseChildren = false;
+				_buttons[i].addEventListener(MouseEvent.MOUSE_UP, onButtonClicked);
+				_buttons[i].addEventListener(MouseEvent.MOUSE_DOWN, onHiliteButton);
+			}
+			
+			
+			
+			
+			
 			
 		}
 		
@@ -38,15 +50,22 @@ package com.interfaceScreens.mainMenu
 		
 		public function cleanUp():void 
 		{
-			_playButton.removeEventListener(MouseEvent.CLICK, onPlayButtonClicked);			
+			_playButton.removeEventListener(MouseEvent.CLICK, onButtonClicked);			
 			removeChild( _clip );
 			_clip = null;
 		}
 		
-		private function onPlayButtonClicked(e:MouseEvent):void 
+		private function onButtonClicked(e:MouseEvent):void 
 		{
+			trace("onButtonClicked" +e.target + " " + e.target.name);
+			_selectedDataSet = e.target.name
 			//Main.unHiliteClip(_playButton);
 			dispatchEvent( new MainMenuEvents(MainMenuEvents.PLAY_BUTTON_CLICKED) );
+		}
+		
+		public function get selectedDataSet():String 
+		{
+			return _selectedDataSet;
 		}
 		
 	}

@@ -7,7 +7,7 @@ package com.game.data {
 	 */
 	public class SlotDataEvents extends Event 
 	{
-		public static const ANIMALS:String = "Animals";
+		public static const ANIMALS:String = "animals";
 		
 		public function SlotDataEvents(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 

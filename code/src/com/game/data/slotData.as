@@ -20,6 +20,42 @@ package com.game.data {
 									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
 									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
 								] 
+				}, 
+				{
+					slotType: "abcs", reelData: 
+								[
+									{ animationID: pig1, 		slotID: Symbol_pig, 	title: "Pig" },
+									{ animationID: chicken1, 	slotID: Symbol_chicken, title: "Chicken" },
+									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
+									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
+								] 
+				}, 
+				{
+					slotType: "shapes", reelData: 
+								[
+									{ animationID: pig1, 		slotID: Symbol_pig, 	title: "Pig" },
+									{ animationID: chicken1, 	slotID: Symbol_chicken, title: "Chicken" },
+									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
+									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
+								] 
+				}, 
+				{
+					slotType: "numbers", reelData: 
+								[
+									{ animationID: pig1, 		slotID: Symbol_pig, 	title: "Pig" },
+									{ animationID: chicken1, 	slotID: Symbol_chicken, title: "Chicken" },
+									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
+									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
+								] 
+				}, 
+				{
+					slotType: "vehicals", reelData: 
+								[
+									{ animationID: pig1, 		slotID: Symbol_pig, 	title: "Pig" },
+									{ animationID: chicken1, 	slotID: Symbol_chicken, title: "Chicken" },
+									{ animationID: cow1, 		slotID: Symbol_cow, 	title: "Cow" },
+									{ animationID: ram1, 		slotID: Symbol_ram, 	title: "Ram" }							
+								] 
 				}
 			];
 		}

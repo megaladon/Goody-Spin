@@ -120,7 +120,7 @@ package
 			
 			_mainMenu.removeEventListener(MainMenuEvents.PLAY_BUTTON_CLICKED, handlePlayClicked);
 			_mainLayer.removeChild(_mainMenu);
-			var _game:Game = new Game(SlotDataEvents.ANIMALS);
+			var _game:Game = new Game( _mainMenu.selectedDataSet );
 			_mainLayer.addChild(_game);
 		}
 		

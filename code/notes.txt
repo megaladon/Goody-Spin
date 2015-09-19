@@ -1,7 +1,7 @@
 add a lot of symbols to a reel so it never ends.
 you have to figure out how to reset it. Or maybe relocate each symbol to the top when it gets off screen
 
-build out main menu
+program back to main menu button
 Reel basics 2h
 	-- vegas mode --
 	randomly stop each reel

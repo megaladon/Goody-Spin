@@ -60,8 +60,8 @@ package com.game.animation
 		private function animateInMainAnimation():void 
 		{
 			_mainAnimation = new _animationID();
-			_mainAnimation.x = 600;
-			_mainAnimation.y = 400;
+			//_mainAnimation.x = 600;
+			//_mainAnimation.y = 400;
 			_mainAnimation.alpha = 0;
 			addChild(_mainAnimation);
 			TweenMax.to(_mainAnimation, 1, {alpha: 1, onComplete:  playMainAnimation} );
@@ -70,13 +70,13 @@ package com.game.animation
 		
 		private function playMainAnimation():void 
 		{
-			_mainAnimation.gotoAndPlay("action");
+			_mainAnimation.animal.gotoAndPlay("action");
 			addEventListener(Event.ENTER_FRAME, checkAnimationDone);
 		}
 		
 		private function checkAnimationDone(e:Event):void 
 		{
-			if (_mainAnimation.currentFrame == _mainAnimation.totalFrames) 
+			if (_mainAnimation.animal.currentFrame == _mainAnimation.animal.totalFrames) 
 			{
 				removeEventListener(Event.ENTER_FRAME, checkAnimationDone);
 				animatOutMainAnimation();

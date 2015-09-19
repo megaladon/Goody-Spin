@@ -74,18 +74,18 @@ package com.game
 			//}
 			
 			_reel1 		= new Reel(_reelData);
-			_reel1.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			_reel1.x 	= 320;
+			_reel1.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);			
+			_reel1.x 	= 303;
 			_reel1.y 	= -_reel1.height + 800 ;
 			
 			_reel2 		= new Reel(_reelData);
 			_reel2.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			_reel2.x 	= _reel1.x + _reel2.width;
+			_reel2.x 	= _reel1.x + _reel2.width + 10;
 			_reel2.y 	= -_reel1.height + 800 ;
 			
 			_reel3 		= new Reel(_reelData);
 			_reel3.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			_reel3.x 	= _reel2.x + _reel3.width;
+			_reel3.x 	= _reel2.x + _reel3.width + 11;
 			_reel3.y 	= -_reel1.height + 800 ;
 			
 			
@@ -95,13 +95,36 @@ package com.game
 			addChild(_reel2);
 			addChild(_reel3);
 			
+			var r1_mask:MovieClip = createReelMask();			
+			r1_mask.x = 200;
+			addChild(r1_mask); 
+			var r2_mask:MovieClip = createReelMask();			
+			r2_mask.x = 415;
+			addChild(r2_mask); 
+			var r3_mask:MovieClip = createReelMask();			
+			r3_mask.x = 635;
+			addChild(r3_mask);
+			
+			
+			_reel1.mask = r1_mask;
+			_reel2.mask = r2_mask;
+			_reel3.mask = r3_mask;
+			
 			_payLine = new PayLine();
 			_payLine.x = _payLine.width/2;
 			_payLine.y = 384;
 			addChild( _payLine );
 			
+			//184.40
+			//164.60
+			
 			var _forground:MovieClip = new basic_foreground();
-			//addChild( _forground );			
+			addChild( _forground );	
+			
+			var _reelHolders:reelHolders = new reelHolders()
+			_reelHolders.x = 184.40;
+			_reelHolders.y = 164.60;
+			addChild( _reelHolders );
 			
 			var _spin_btn:MovieClip = new spin_btn();
 			_spin_btn.x = 448;
@@ -111,6 +134,18 @@ package com.game
 			addEventListener(Event.ENTER_FRAME, run);
 			
 			_gameState = GameEvents.WAITING_FOR_USER;
+		}
+		
+		private function createReelMask():MovieClip 
+		{
+			var m:MovieClip = new MovieClip();
+			m.graphics.lineStyle(5, 0xFF0000, 1);
+			m.graphics.beginFill(0xFF0000, 1);
+			m.graphics.drawRoundRect(0, 0, 200,420, 25);
+			m.graphics.endFill();
+			
+			m.y = 173;
+			return(m);
 		}
 				
 		private function resetReels():void 
