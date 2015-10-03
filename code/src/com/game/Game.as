@@ -75,25 +75,25 @@ package com.game
 			
 			_reel1 		= new Reel(_reelData);
 			_reel1.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);			
-			_reel1.x 	= 303;
-			_reel1.y 	= -_reel1.height + 800 ;
+			//_reel1.x 	= 303;
+			_reel1.y 	= -_reel1.height + 635.40 ;
 			
 			_reel2 		= new Reel(_reelData);
 			_reel2.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			_reel2.x 	= _reel1.x + _reel2.width + 10;
-			_reel2.y 	= -_reel1.height + 800 ;
+			//_reel2.x 	= _reel1.x + _reel2.width + 10;
+			_reel2.y 	= -_reel1.height + 635.40 ;
 			
 			_reel3 		= new Reel(_reelData);
 			_reel3.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			_reel3.x 	= _reel2.x + _reel3.width + 11;
-			_reel3.y 	= -_reel1.height + 800 ;
+			//_reel3.x 	= _reel2.x + _reel3.width + 11;
+			_reel3.y 	= -_reel1.height + 635.40;
 			
 			
 			_numReelsStopped = 0;
 			_currSymbolNum = 0;	
-			addChild(_reel1);
-			addChild(_reel2);
-			addChild(_reel3);
+			
+			var _forground:MovieClip = new basic_foreground();
+			addChild( _forground );
 			
 			var r1_mask:MovieClip = createReelMask();			
 			r1_mask.x = 200;
@@ -112,23 +112,25 @@ package com.game
 			
 			_payLine = new PayLine();
 			_payLine.x = _payLine.width/2;
-			_payLine.y = 384;
+			_payLine.y = 304;
+			//_payLine.alpha = 0;
 			addChild( _payLine );
 			
 			//184.40
 			//164.60
 			
-			var _forground:MovieClip = new basic_foreground();
-			addChild( _forground );	
-			
 			var _reelHolders:reelHolders = new reelHolders()
-			_reelHolders.x = 184.40;
-			_reelHolders.y = 164.60;
+			//_reelHolders.x = 184.40;
+			//_reelHolders.y = 84.60;
 			addChild( _reelHolders );
+				
+			_reelHolders.r1.addChild(_reel1);
+			_reelHolders.r2.addChild(_reel2);
+			_reelHolders.r3.addChild(_reel3);
 			
 			var _spin_btn:MovieClip = new spin_btn();
-			_spin_btn.x = 448;
-			_spin_btn.y = 640;
+			_spin_btn.x = 400;
+			_spin_btn.y = 540;
 			_spin_btn.addEventListener(MouseEvent.CLICK, onSpin);
 			addChild(_spin_btn);	;
 			addEventListener(Event.ENTER_FRAME, run);
@@ -144,7 +146,7 @@ package com.game
 			m.graphics.drawRoundRect(0, 0, 200,420, 25);
 			m.graphics.endFill();
 			
-			m.y = 173;
+			m.y = 93;
 			return(m);
 		}
 				
@@ -319,7 +321,8 @@ package com.game
 		private function balanceReel(reel:Reel):void 
 		{
 			reel.onReelBalanced( getSymbolOnPayLine(reel.reelSymbols));
-			var dist:Number = (reel.currentSymbol.clip.y + reel.y) - _payLine.y ;			
+			//var dist:Number = (reel.currentSymbol.clip.y + reel.y) - _payLine.y ;			
+			var dist:Number = (reel.currentSymbol.clip.y + reel.y + (reel.currentSymbol.clip.height/2)) - _payLine.y ;			
 			var destination:Number
 			if (dist > 0 && reel.y < 0 || dist < 0 && reel.y < 0) 
 			{
@@ -344,7 +347,7 @@ package com.game
 			for (var i:int = 0; i < reels.length; i++) 
 			{	
 				var clip:MovieClip = reels[i].getSymbolClosetsSymbol();
-				var dist:Number = (clip.y + reels[i].y) - _payLine.y ;
+				var dist:Number = (clip.y + reels[i].y + (reels[i].currentSymbol.clip.height/2)) - _payLine.y ;
 				reels[i].y -= dist;
 			}
 		}

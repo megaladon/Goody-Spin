@@ -52,7 +52,8 @@ package com.game.reel
 			for (var i:int = 0; i < _reelSymbols.length; i++) 
 			{
 				//var sum:Number = (_reelSymbols[i].clip.height * i) // + ((_reelSymbols[i].clip.height * 4) * j)					
-				_reelSymbols[i].clip.y = (_reelSymbols[i].clip.height * i) // + ((_reelSymbols[i].clip.height * 4) * j);;
+				_reelSymbols[i].clip.y = (_reelSymbols[i].clip.height * i) // + ((_reelSymbols[i].clip.height * 4) * j);
+				_reelSymbols[i].clip.x += _reelSymbols[i].clip.width / 2;
 				addChild( _reelSymbols[i].clip );
 			}			
 		}

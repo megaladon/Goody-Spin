@@ -26,7 +26,7 @@ package com.interfaceScreens.mainMenu
 		{
 			_playButton = _clip.play_btn;
 			
-			var _buttons:Array = [_clip.abcs, _clip.numbers, _clip.animals, _clip.vehicals, _clip.shapes];
+			var _buttons:Array = [_clip.abcs, _clip.numbers, _clip.animals, _clip.vehicles, _clip.shapes];
 			
 			for (var i:int = 0; i < _buttons.length; i++) 
 			{
@@ -35,11 +35,7 @@ package com.interfaceScreens.mainMenu
 				_buttons[i].addEventListener(MouseEvent.MOUSE_UP, onButtonClicked);
 				_buttons[i].addEventListener(MouseEvent.MOUSE_DOWN, onHiliteButton);
 			}
-			
-			
-			
-			
-			
+				
 			
 		}
 		

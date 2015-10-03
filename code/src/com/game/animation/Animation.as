@@ -70,13 +70,13 @@ package com.game.animation
 		
 		private function playMainAnimation():void 
 		{
-			_mainAnimation.animal.gotoAndPlay("action");
+			_mainAnimation.ani.gotoAndPlay("action");
 			addEventListener(Event.ENTER_FRAME, checkAnimationDone);
 		}
 		
 		private function checkAnimationDone(e:Event):void 
 		{
-			if (_mainAnimation.animal.currentFrame == _mainAnimation.animal.totalFrames) 
+			if (_mainAnimation.ani.currentFrame == _mainAnimation.ani.totalFrames) 
 			{
 				removeEventListener(Event.ENTER_FRAME, checkAnimationDone);
 				animatOutMainAnimation();
