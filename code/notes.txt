@@ -1,14 +1,55 @@
-add a lot of symbols to a reel so it never ends.
-you have to figure out how to reset it. Or maybe relocate each symbol to the top when it gets off screen
+******** Goody Spin *******************
 
-program back to main menu button
-Reel basics 2h
-	-- vegas mode --
-	randomly stop each reel
+********************************************************************************************
+
+// Resolution references ------------------------------
+http://gamedevelopment.tutsplus.com/articles/quick-tip-what-is-the-best-screen-resolution-for-your-game--gamedev-14723
+2048x1536px, 4:3 (iPad 3rd gen, iPad 4th gen, iPad Air, iPad mini 2nd gen): This is twice the resolution of the previous generation. 
+When making an iPad game it is therefore easier to create it for a 2048x1536px display first, and then scale it down by 50%
+
+// Sound references --------------------------------------
+http://audiojungle.net/
+http://www.freesound.org/
+http://www.melodyloops.com/music-for/games/
 	
-create different types of reel spins
-random mode (vegas style)
-vo triggers
+// Android air references -----------------------------
+https://www.youtube.com/watch?v=jndzCuxIGew
+	
+// iOS air references ---------------------------------
+http://www.adobe.com/devnet/air/articles/packaging-air-apps-ios.html
+	
+	
+// Temp Description
+A fun and easy way for toddlers or infants to learn animal sounds. Kids simply touch an animal to hear its sound. Enjoy this fun educational game for kids.
+
+Features:
+-Kid friendly, simply touch and play.
+-Keeps kids entertained on car rides.
+-All their favorite animal sounds.
+-Even your baby can enjoy the animal sounds. 
+-A variety of scenes and a varieties of animals.
 
 
-bugs
+// TODO ----------------------------------------------------------
+
+// BUGS -------------------------------------------------------------
+
+
+Convert an Apple developer certificate to a P12 file on Windows
+
+To develop apps via Build, you must use a P12 certificate file. You generate this certificate based on the Apple iPhone developer certificate file you receive from Apple.
+
+    1. Download and install OpenSSL
+
+   2. Convert the developer certificate file you receive from Apple into a PEM certificate file. To do this, run the following command-line statement from the OpenSSL bin directory:
+
+openssl x509 -in developer_identity.cer -inform DER -out developer_identity.pem -outform PEM
+
+    If you are using the private key from the keychain on a Mac computer, convert it into a PEM key:
+
+openssl pkcs12 -nocerts -in mykey.p12 -out mykey.pem
+
+    You can now generate a valid P12 file, based on the key and the PEM version of the iPhone developer certificate:
+
+openssl pkcs12 -export -inkey mykey.key -in developer_identity.pem -out iphone_dev.p12
+

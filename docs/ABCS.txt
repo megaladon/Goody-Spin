@@ -1,0 +1,26 @@
+Ambulance
+Bicycle
+Cow
+Duck
+Elaphant
+Fire truck
+G
+Horse
+Ice Cream?
+J
+K
+Lion
+Monkey
+N
+Owl
+P
+Q
+Rooster
+Snake
+Train
+U
+V
+W
+X
+Y
+Z
