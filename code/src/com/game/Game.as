@@ -207,8 +207,11 @@ package com.game
 		
 		private function animationDone(e:AnimationEvents):void 
 		{
+			trace("animationDone " +_animation );
 			removeChild( _animation );
 			_animation = null;
+			
+			trace("animationDone " +_animation );
 			updateGameState( GameEvents.WAITING_FOR_USER );
 		}
 				
