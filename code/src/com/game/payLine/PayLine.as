@@ -18,6 +18,7 @@ package com.game.payLine
 		public function PayLine() 
 		{
 			_clip = new payline();
+			_clip.alpha = 0;
 			addChild( _clip );			
 		}
 		

@@ -6,8 +6,10 @@ package com.game
 	import com.game.payLine.PayLine;
 	import com.game.reel.Reel;
 	import com.game.reel.ReelEvents;
+	import com.greensock.easing.Back;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Linear;
+	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -52,40 +54,21 @@ package com.game
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			_reelData = SlotData.getSlotSymbols( _slotType );
 			
-			//var gameData:Array = 
-			//[ 
-				//{
-					//slotType: "Animals", reelData: 
-								//[
-									//{ animationID: "pig1", slotID: Symbol_pig },
-									//{ animationID: "chicken1", slotID: Symbol_chicken },
-									//{ animationID: "cow1", slotID: Symbol_cow },
-									//{ animationID: "ram1", slotID: Symbol_ram }							
-								//] 
-				//}
-			//];
-			
-			//for (var i:int = 0; i < gameData.length ; i++) 
-			//{
-				//if (gameData[i].slotType == _slotType) 
-				//{
-					//_reelData = gameData[i].reelData
-				//}
-			//}
+		
 			
 			_reel1 		= new Reel(_reelData);
 			_reel1.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);			
-			//_reel1.x 	= 303;
+			_reel1.x 	= 10;
 			_reel1.y 	= -_reel1.height + 635.40 ;
 			
 			_reel2 		= new Reel(_reelData);
 			_reel2.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			//_reel2.x 	= _reel1.x + _reel2.width + 10;
+			_reel2.x 	= 10;
 			_reel2.y 	= -_reel1.height + 635.40 ;
 			
 			_reel3 		= new Reel(_reelData);
 			_reel3.addEventListener(ReelEvents.REEL_STOPPED, reelHasStopped);
-			//_reel3.x 	= _reel2.x + _reel3.width + 11;
+			_reel3.x 	= 10;
 			_reel3.y 	= -_reel1.height + 635.40;
 			
 			
@@ -135,7 +118,19 @@ package com.game
 			addChild(_spin_btn);	;
 			addEventListener(Event.ENTER_FRAME, run);
 			
+			var _back_btn:back_btn = new back_btn();
+			_back_btn.x = 37.45;
+			_back_btn.y = 736.1;
+			_back_btn.addEventListener(MouseEvent.CLICK, onBack);
+			addChild( _back_btn );
+			
 			_gameState = GameEvents.WAITING_FOR_USER;
+		}
+		
+		private function onBack(e:MouseEvent):void 
+		{
+			trace("onback");
+			dispatchEvent( new GameEvents(GameEvents.BACK_BUTTON_CLICKED) );
 		}
 		
 		private function createReelMask():MovieClip 
@@ -175,13 +170,14 @@ package com.game
 				_reel2.isMoving = !_reel2.isMoving;
 				_reel3.isMoving = !_reel3.isMoving;
 				var _reelSpeeds:Array = [ [1000, 1200, 1300] ]; 						
-				_reel1.interval = setInterval(stopReel, 1000, _reel1);
+				_reel1.interval = setInterval(stopReel, 500, _reel1);
 				updateGameState(GameEvents.SPINNING);				
 			}
 		}
 		
 		private function stopReel(reel:Reel):void 
 		{
+			trace("stopReel");
 			clearInterval(reel.interval);
 			
 			if (_gameMode == "toddler") 
@@ -196,11 +192,27 @@ package com.game
 			_numReelsStopped++;
 			if (_numReelsStopped == 3) 
 			{
-				_animation = new Animation( _reelData[_currSymbolNum].animationID, _reelData[_currSymbolNum].title );
-				_animation.addEventListener(AnimationEvents.ANIMATION_DONE, animationDone);
-				addChild( _animation );
-				_currSymbolNum++;
-				TweenMax.delayedCall( 1,cosmeticReelReset);
+				
+				var _timeLine:TimelineMax = new TimelineMax( {onComplete: function ():void 
+				{
+					TweenMax.delayedCall(.7, function ():void 
+					{
+					_animation = new Animation( _reelData[_currSymbolNum].animationID, _reelData[_currSymbolNum].title );
+					_animation.addEventListener(AnimationEvents.ANIMATION_DONE, animationDone);
+					addChild( _animation );
+					_currSymbolNum++;
+					TweenMax.delayedCall( 1.3,cosmeticReelReset);
+					});
+				}});
+				
+				// Animate each symbol
+				_timeLine.insert( _reel1.animateSymbol() );
+				_timeLine.insert( TweenMax.delayedCall( .3,_reel2.animateSymbol) );
+				_timeLine.insert( TweenMax.delayedCall( .6,_reel3.animateSymbol) );
+				_timeLine.play();
+				
+				
+				
 			}
 			if (_currSymbolNum == _reelData.length) _currSymbolNum = 0;
 		}
@@ -323,8 +335,7 @@ package com.game
 		 */
 		private function balanceReel(reel:Reel):void 
 		{
-			reel.onReelBalanced( getSymbolOnPayLine(reel.reelSymbols));
-			//var dist:Number = (reel.currentSymbol.clip.y + reel.y) - _payLine.y ;			
+			reel.onReelBalanced( getSymbolOnPayLine(reel.reelSymbols));	
 			var dist:Number = (reel.currentSymbol.clip.y + reel.y + (reel.currentSymbol.clip.height/2)) - _payLine.y ;			
 			var destination:Number
 			if (dist > 0 && reel.y < 0 || dist < 0 && reel.y < 0) 

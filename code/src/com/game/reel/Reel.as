@@ -1,5 +1,7 @@
 package com.game.reel 
 {
+	import com.greensock.easing.Bounce;
+	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -31,16 +33,13 @@ package com.game.reel
 		{
 			var clip:MovieClip;
 			_reelSymbols = [];
-			for (var j:int = 0; j < 30; j++) 
+			for (var j:int = 0; j < 10; j++) 
 			{
 				for (var i:int = 0; i < _data.length; i++) 
 				{
 					clip = new _data[i].slotID();
-					//var sum:Number = (clip.height * i)  + ((clip.height * 4) * j)					
-					//clip.y = (clip.height * i)  + ((clip.height * 4) * j);
 					var clipData:Object = { animationID: _data[i].animationID, slotID: _data[i].slotID, clip: clip };
 					_reelSymbols.push( clipData );
-					//addChild( clip );
 				}
 			}
 			
@@ -50,9 +49,8 @@ package com.game.reel
 		private function placeSymbols():void 
 		{			
 			for (var i:int = 0; i < _reelSymbols.length; i++) 
-			{
-				//var sum:Number = (_reelSymbols[i].clip.height * i) // + ((_reelSymbols[i].clip.height * 4) * j)					
-				_reelSymbols[i].clip.y = (_reelSymbols[i].clip.height * i) // + ((_reelSymbols[i].clip.height * 4) * j);
+			{				
+				_reelSymbols[i].clip.y = (_reelSymbols[i].clip.height * i)
 				_reelSymbols[i].clip.x += _reelSymbols[i].clip.width / 2;
 				addChild( _reelSymbols[i].clip );
 			}			
@@ -64,7 +62,7 @@ package com.game.reel
 		public function getSymbolClosetsSymbol():MovieClip 
 		{
 			var mc:MovieClip;
-			// set take 3 from i because we don't want the symbols below the pay line
+			// take 3 from i because we don't want the symbols below the pay line
 			for (var i:int = _reelSymbols.length-3; i > 0; i--) 
 			{
 				if ( _reelSymbols[i].slotID ==  _currentSymbol.slotID) 
@@ -90,6 +88,15 @@ package com.game.reel
 			TweenMax.delayedCall(1, notifyStop);
 		}
 		
+		public function animateSymbol():void 
+		{
+			
+			var _timeLine:TimelineMax = new TimelineMax()
+			_timeLine.insert( TweenMax.to( _currentSymbol.clip, .3, { scaleX: 1.5, scaleY: 1.5, ease:Bounce.easeInOut } )	 );
+			_timeLine.append( TweenMax.to( _currentSymbol.clip, .3, { scaleX: 1, scaleY: 1, ease:Bounce.easeInOut } )	 );
+			_timeLine.play();
+		}
+
 		private function notifyStop():void 
 		{
 			dispatchEvent( new ReelEvents(ReelEvents.REEL_STOPPED) );			

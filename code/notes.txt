@@ -32,6 +32,11 @@ Features:
 
 // TODO ----------------------------------------------------------
 
+all buttons should animate and make a sound
+should be some sparkles or something when you hit the jackpot
+add sounds to sping screen
+program VO with place holders
+
 // BUGS -------------------------------------------------------------
 
 

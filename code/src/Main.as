@@ -2,6 +2,7 @@ package
 {
 	import com.game.Game;
 	import com.game.data.SlotDataEvents;
+	import com.game.GameEvents;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
 	import com.interfaceScreens.mainMenu.MainMenu;
@@ -38,6 +39,7 @@ package
 		
 		//private var _hud:Hud;
 		private var _intro:Intro;
+		private var _game:Game;
 		//private var _tm:TransitionManager;
 		
 		public function Main():void 
@@ -120,8 +122,16 @@ package
 			
 			_mainMenu.removeEventListener(MainMenuEvents.PLAY_BUTTON_CLICKED, handlePlayClicked);
 			_mainLayer.removeChild(_mainMenu);
-			var _game:Game = new Game( _mainMenu.selectedDataSet );
+			_game = new Game( _mainMenu.selectedDataSet );
+			_game.addEventListener(GameEvents.BACK_BUTTON_CLICKED, handleBackClicked);
 			_mainLayer.addChild(_game);
+		}
+		
+		private function handleBackClicked(e:GameEvents):void 
+		{
+			_mainLayer.removeChild(_game);
+			_game = null;
+			initMainMenu();
 		}
 		
 	}
